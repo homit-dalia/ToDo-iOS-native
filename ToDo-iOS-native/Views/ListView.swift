@@ -9,20 +9,18 @@ import SwiftUI
 
 struct ListView: View {
     
-    @State var items: [ItemModel] = [
-        ItemModel(title: "Complete all assignments",isCompleted: false),
-        ItemModel(title: "Go to the gym",isCompleted: false),
-        ItemModel(title: "Call Counsellor",isCompleted: false),
-        ItemModel(title: "Clean Fridge",isCompleted: false),
-        ItemModel(title: "Take Bruno for a walk",isCompleted: true),
-        ItemModel(title: "Attend 9pm Seminar", isCompleted: true),
-    ]
+    @EnvironmentObject var listViewModel: ListViewModel
     
     var body: some View {
         List {
-            ForEach(items) { item in
+            ForEach(listViewModel.items) { item in
                 ListRowView(item: item)
+                    .onTapGesture {
+                        handleOnTapListItem(item: item)
+                    }
             }
+            .onDelete(perform: listViewModel.delete)
+            .onMove(perform: listViewModel.move)
         }
         .listStyle(.inset)
         .navigationTitle("To Do")
@@ -37,6 +35,13 @@ struct ListView: View {
             }
         }
     }
+    
+    func handleOnTapListItem(item: ItemModel) {
+        withAnimation(.bouncy()) {
+            listViewModel.toggleIsCompleted(item: item)
+        }
+    }
+    
 }
 
 #Preview {
