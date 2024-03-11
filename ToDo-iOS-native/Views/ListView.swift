@@ -37,7 +37,7 @@ struct ListView: View {
     }
     
     func handleOnTapListItem(item: ItemModel) {
-        withAnimation(.bouncy()) {
+        withAnimation(.bouncy() ) {
             listViewModel.toggleIsCompleted(item: item)
         }
     }
