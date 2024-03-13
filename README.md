@@ -5,7 +5,7 @@ This app includes animations, transitions, modals and is made exclusively using 
 ## Video Demonstration
 https://github.com/homit-dalia/ToDo-iOS-native/assets/103167599/faadcef8-f128-48a6-a068-758434955f76
 
-#Screenshots
+# Screenshots
 <p float="center">
   <img src="https://github.com/homit-dalia/ToDo-iOS-native/assets/103167599/6a622bd7-3eb2-483b-8eab-7d8b5798a0bc" width="30%" />
   <img src="https://github.com/homit-dalia/ToDo-iOS-native/assets/103167599/711ecf1d-6c53-4d93-890d-31bfd3730baf" width="30%" /> 
