@@ -16,7 +16,7 @@ class ListViewModel: ObservableObject {
     }
     
     // Initialize isFirstTimeUser based on the value stored in UserDefaults
-    var isFirstTimeUser: Bool {
+    var isFirstTimeUser: Bool = true {
         didSet {
             saveFirstTimeUser()
         }
@@ -75,10 +75,13 @@ class ListViewModel: ObservableObject {
         if let encodedData = try? JSONEncoder().encode(items) {
             UserDefaults.standard.setValue(encodedData, forKey: itemsKey)
         }
+        isFirstTimeUser = false
     }
     
     func saveFirstTimeUser() {
-        // Update the value in UserDefaults when isFirstTimeUser changes
-        UserDefaults.standard.setValue(isFirstTimeUser, forKey: isFirstTimeUserKey)
+        if !isFirstTimeUser{
+            // Update the value in UserDefaults when isFirstTimeUser changes
+            UserDefaults.standard.setValue(isFirstTimeUser, forKey: isFirstTimeUserKey)
+        }
     }
 }

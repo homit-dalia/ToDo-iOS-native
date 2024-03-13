@@ -17,6 +17,7 @@ struct ListRowView: View {
                 .foregroundStyle(item.isCompleted ? .green : .red)
             Text(item.title)
                 .padding(.leading, 10)
+                .font(.title3)
             Spacer()
         }
     }

@@ -10,6 +10,8 @@ import SwiftUI
 struct ListView: View {
     
     @EnvironmentObject var listViewModel: ListViewModel
+    @State private var showingAddView = false
+    @State private var isAnimated = false
     
     var body: some View {
         List {
@@ -18,6 +20,12 @@ struct ListView: View {
                     .onTapGesture {
                         handleOnTapListItem(item: item)
                     }
+                    .swipeActions(edge: .leading) {
+                        Button("Completed") {
+                            handleOnTapListItem(item: item)
+                        }
+                        .tint(Color.blue)
+                    }
             }
             .onDelete(perform: listViewModel.delete)
             .onMove(perform: listViewModel.move)
@@ -25,25 +33,57 @@ struct ListView: View {
         .listStyle(.inset)
         .navigationTitle("To Do")
         .toolbar{
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .navigationBarLeading) {
                 EditButton()
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink("Add") {
-                    AddView()
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Add") {
+                    showingAddView = true
                 }
             }
+        }
+        .overlay {
+            if listViewModel.items.isEmpty {
+                VStack{
+                    Image(systemName: "checkmark.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
+                    Text("All Done!")
+                        .font(.title)
+                    Text("You have no pending tasks.")
+                    Button("Add a Task") {
+                        showingAddView = true
+                    }
+                    .font(.title3)
+                    .foregroundColor(Color.white)
+                    .frame(height: 50)
+                    .frame(maxWidth: 200)
+                    .background(isAnimated ? Color.red : Color.green)
+                    .cornerRadius(10)
+                    .padding(.top)
+                }
+                .padding(40)
+            }
+            
+        }
+        .onAppear(perform: {
+            toggleAnimation()
+        })
+        .sheet(isPresented: $showingAddView) {
+            AddView()
         }
     }
     
     func handleOnTapListItem(item: ItemModel) {
-        withAnimation(.bouncy() ) {
+        withAnimation(Animation.easeInOut(duration: 1)) {
             listViewModel.toggleIsCompleted(item: item)
         }
     }
     
-}
-
-#Preview {
-    ListView()
+    func toggleAnimation(){
+        withAnimation(Animation.spring(duration: 2).repeatForever()) {
+            isAnimated.toggle()
+        }
+    }
 }
